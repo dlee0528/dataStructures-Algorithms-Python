@@ -6,7 +6,7 @@ class BiinarySearchTreeNode:
 
     def add_child(self, data):
         if data == self.data:
-            return
+            return # node already exists
         
         if data < self.data:
             # add data in left sub tree
@@ -21,24 +21,6 @@ class BiinarySearchTreeNode:
             else:
                 self.right = BiinarySearchTreeNode(data) # leaaf
                 
-
-    def in_order_traversal(self):
-        elements = []
-
-        # visit left tree
-        if self.left:
-            elements += self.left.in_order_traversal()
-        
-
-        # visit base node
-        elements.append(self.data)
-
-        # visit right node
-        if self.right:
-            elements += self.right.in_order_traversal()
-
-        return elements
-
     # log(n)
     def search(self,val):
         if self.data == val:
@@ -58,6 +40,61 @@ class BiinarySearchTreeNode:
             else:
                 return False
 
+
+    def in_order_traversal(self):
+        elements = []
+
+        # visit left tree
+        if self.left:
+            elements += self.left.in_order_traversal()
+        
+        # visit base node
+        elements.append(self.data)
+
+        # visit right node
+        if self.right:
+            elements += self.right.in_order_traversal()
+
+        return elements
+    
+    def delete(self, val):
+        if val < self.data:
+            if self.left:
+                self.left = self.left.delete(val)
+        elif val > self.data:
+            if self.right:
+                self.right = self.right.delete(val)
+        else:
+            if self.left is None and self.right is None: # reach your last point
+                return None
+
+            elif self.left is None:
+                return self.right
+
+            elif self.right is None:
+                return self.left
+
+            # we have a right subtree containing the val
+            min_val = self.right.find_min()
+            self.data = min_val # make a copy
+            self.right = self.right.delete(min_val)
+
+        return self
+
+    
+    def find_max(self):
+        if self.right is None:
+            return self.data
+
+        return self.right.find_max()
+
+    def find_min(self):
+        if self.left is None:
+            return self.data
+
+        return self.left.find_min()
+
+
 def build_tree(elements):
     root = BiinarySearchTreeNode(elements[0])
 
@@ -68,8 +105,13 @@ def build_tree(elements):
 
 
 if __name__== "__main__":
-    numbers = [17,4,1,20,9,23,18,34, 18, 4]
-    numbers_tree = build_tree(numbers)
-    print(numbers_tree.in_order_traversal())
-    print(numbers_tree.search(20)) 
-    print(numbers_tree.search(21))
+    # numbers = [17,4,1,20,9,23,18,34, 18, 4]
+    # numbers_tree = build_tree(numbers)
+    # print(numbers_tree.in_order_traversal())
+    # print(numbers_tree.search(20)) 
+    # print(numbers_tree.search(21))
+
+    # delete
+    numbers_tree = build_tree([17,4,1,20,9,23,18,34])
+    numbers_tree.delete(20)
+    print("After deleting 20", numbers_tree.in_order_traversal())
