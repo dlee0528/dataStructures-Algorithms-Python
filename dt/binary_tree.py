@@ -58,14 +58,18 @@ class BiinarySearchTreeNode:
         return elements
     
     def delete(self, val):
+        # find in the left substree
         if val < self.data:
-            if self.left:
-                self.left = self.left.delete(val)
+            if self.left: # if there's any left subtree
+                self.left = self.left.delete(val) # recursively call delete
+    
+        # find in the right subtree
         elif val > self.data:
-            if self.right:
-                self.right = self.right.delete(val)
+            if self.right: # if there's any right subtree
+                self.right = self.right.delete(val) # recursively call delete
+        
         else:
-            if self.left is None and self.right is None: # reach your last point
+            if self.left is None and self.right is None: # reach the laast node point
                 return None
 
             elif self.left is None:
@@ -74,7 +78,7 @@ class BiinarySearchTreeNode:
             elif self.right is None:
                 return self.left
 
-            # we have a right subtree containing the val
+
             min_val = self.right.find_min()
             self.data = min_val # make a copy
             self.right = self.right.delete(min_val)
