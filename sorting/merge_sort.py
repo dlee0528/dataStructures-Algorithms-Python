@@ -1,3 +1,6 @@
+# O(nlongn)
+# merge: O(n)
+# sorting: O(logn)
 def merge_sort(a):
     if len(a) > 1:
         mid = len(a) // 2
